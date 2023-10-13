@@ -7,9 +7,11 @@ import pandas as pd
 #загружаем натренированную модель из файла и делаем сайт
 # для предсказания использую загруженную и натренированную модель
 
-st.title('Penguin Classifier')
-st.write("This app uses 6 inputs to predict the species of penguin using \
-         a model built on the Palmer's Penguin's dataset. Use the form below to get started!")
+st.title('Предсказываем вид пингвина')
+st.write("Приложение на основе машинного обучения\
+          предсказывает вид пингвинов по набору из 6 параметров")
+st.write("Задайте ваши параметры ниже:")
+
 
 #загружаем из файла модель и ключ кодирования
 rf_pickle = open('RFmodel_penguin.pickle', 'rb')
@@ -22,14 +24,14 @@ map_pickle.close()
 #создаем элементы ввода
 #для текстовых переменных - это список из нескольких вариантов
 #для числовых переменных - поле численного ввода
-island = st.selectbox('Penguin Island', options=['Biscoe', 'Dream', 'Torgerson'])
-sex = st.selectbox('Sex', options=['Female', 'Male'])
-bill_length = st.number_input('Bill Length (mm)', value=39.1, format='%f')
-bill_depth = st.number_input('Bill Depth (mm)', value=18.7, format='%f')
-flipper_length = st.number_input('Flipper Length (mm)', value=181.0, format='%f')
-body_mass = st.number_input('Body Mass (g)', value=3750.0, format='%f')
+island = st.selectbox('Остров', options=['Biscoe', 'Dream', 'Torgerson'])
+sex = st.selectbox('Пол', options=['жен', 'муж'])
+bill_length = st.number_input('Длина клюва (mm)', value=39.1, format='%f')
+bill_depth = st.number_input('Глубина клюва (mm)', value=18.7, format='%f')
+flipper_length = st.number_input('Длина крыла (mm)', value=181.0, format='%f')
+body_mass = st.number_input('Масса тела (g)', value=3750.0, format='%f')
 
-st.write('the user inputs are {}'.format([island, sex, bill_length, bill_depth, flipper_length, body_mass]))
+#st.write('the user inputs are {}'.format([island, sex, bill_length, bill_depth, flipper_length, body_mass]))
 
 #подгатавливаем dataset для рапознования
 #преобразуем вводимые пользователем данные из строкового значения в числовой
@@ -53,7 +55,7 @@ new_prediction = rfc.predict([[bill_length, bill_depth, flipper_length, body_mas
 
 prediction_species = unique_penguin_mapping[new_prediction][0]
 
-st.write('We predict your penguin is of the {} species'.format(prediction_species))
+#st.write('We predict your penguin is of the {} species'.format(prediction_species))
 
 #делаем визуализацию предсказание на графике
 #добавляем одну сроку вниз с дефолтным пингвином/тем который задается пользователем
@@ -71,7 +73,7 @@ ax2 = sns.scatterplot(data=penguins_df, x=selected_x_var, y=selected_y_var,
                       hue='species')
 plt.xlabel(selected_x_var)
 plt.ylabel(selected_y_var)
-plt.title(f'Predicted penguin is: {prediction_species}')
+plt.title(f'Вид пингвина: {prediction_species}')
 st.pyplot(fig2)
 
 #выводим график feature importance, который загружаем с диска
